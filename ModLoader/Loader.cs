@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -11,8 +12,10 @@ namespace ModLoader
 {
     public class Loader
     {
-        public static readonly List<IMod> Mods = new List<IMod>();
-        
+        public const string MOD_LOADER_VERSION = "0.1.*";
+        private static readonly List<Mod> FoundMods = new List<Mod>();
+        public static readonly List<Mod> LoadedMods = new List<Mod>();
+
         //Called from Steamworks.SteamAPI#Init() method
         public static void Start()
         {
@@ -22,40 +25,60 @@ namespace ModLoader
             
             //Start loading other mods
             var modFolder = GETModFolder();
-            Debug.Log("Searching '{}' for mods.".Replace("{}",modFolder.FullName));
+            Debug.Log($"Searching '{modFolder.FullName}' for mods.");
 
             foreach (var modFile in Directory.GetFiles(modFolder.FullName, "*.dll"))
             {
-                Debug.Log("Loading mod file:" + modFile);
+                Debug.Log($"Loading mod file: {modFile}");
                 foreach (var type in Assembly.LoadFile(modFile).GetExportedTypes())
                 {
-                    try
-                    {
-                        if (!type.IsDefined(typeof(IMod), true) &&
-                            !typeof(IMod).IsAssignableFrom(type)) continue;
-                        Debug.Log("Found '"+ type + "' in '" + modFile + "'");
-                        var ctor = type.GetConstructor(Type.EmptyTypes);
-                        if (ctor != null)
-                        {
-                            Mods.Add((IMod) ctor.Invoke(null));
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError("Failed to load '"+ type + "' in '" + modFile + "'");
-                        Debug.LogError(ex);
-                    }
+                    if (ProcessType(type))
+                        break;
                 } 
             }
 
-            foreach (var mod in Mods)
+            FoundMods.Sort();
+            foreach (var foundMod in FoundMods)
             {
-                mod.Load();
+                try
+                {
+                    foundMod.Load();
+                    LoadedMods.Add(foundMod);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Failed to load {foundMod}");
+                    Debug.LogError(e);
+                }
             }
-            
             CommandManager.Manager.AddCommand(new ModloaderCommand());
         }
 
+        private static bool ProcessType(Type type)
+        {
+            try
+            {
+                if (!typeof(Mod).IsAssignableFrom(type))
+                    return false;
+                if (!type.IsDefined(typeof(ModInfo), true))
+                {
+                    Debug.LogWarning($"Mod '{type}' has no ModInfo attribute! Skipping it...");
+                    return false;
+                }
+                var ctor = type.GetConstructor(Type.EmptyTypes);
+                if (ctor != null)
+                {
+                    FoundMods.Add((Mod) ctor.Invoke(null));
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Failed to load {type}");
+                Debug.LogError(ex);
+            }
+            return false;
+        }
+        
 
         //Get the mod directory
         private static DirectoryInfo GETModFolder()
@@ -101,22 +124,23 @@ namespace ModLoader
         {
             if (command.Arguments.Count == 0)
             {
-                ConsoleWindow3.SendConsoleResponse("Modloader v0.0.0 by juanmuscaria", ConsoleMessageType.SpecialInfo);
+                ConsoleWindow3.SendConsoleResponse($"Modloader v{Loader.MOD_LOADER_VERSION} by juanmuscaria", ConsoleMessageType.SpecialInfo);
                 ConsoleWindow3.SendConsoleResponse("Use modloader mods to list all installed mods", ConsoleMessageType.SpecialInfo);
             }
             else
             {
                 if (command.Arguments[0].ToLower().Equals("mods"))
                 {
-                    ConsoleWindow3.SendConsoleResponse("Modloader v0.0.0 by juanmuscaria", ConsoleMessageType.SpecialInfo);
-                    if (Loader.Mods.Count > 0)
+                    ConsoleWindow3.SendConsoleResponse($"Modloader v{Loader.MOD_LOADER_VERSION} by juanmuscaria", ConsoleMessageType.SpecialInfo);
+                    if (Loader.LoadedMods.Count > 0)
                     {
-                        foreach (var mod in Loader.Mods)
+                        foreach (var mod in Loader.LoadedMods)
                         {
+                            ModInfo info = ModInfo.OfMod(mod);
                             ConsoleWindow3.SendConsoleResponse("--------------------", ConsoleMessageType.SpecialInfo);
-                            ConsoleWindow3.SendConsoleResponse("Mod name: " + mod.GetType().Assembly.GetName().Name, ConsoleMessageType.SpecialInfo);
-                            ConsoleWindow3.SendConsoleResponse("Mod description: <still not implemented>" , ConsoleMessageType.SpecialInfo);
-                            ConsoleWindow3.SendConsoleResponse("Mod version: " + mod.GetType().Assembly.GetName().Version, ConsoleMessageType.SpecialInfo);
+                            ConsoleWindow3.SendConsoleResponse($"Mod name: {info.name}", ConsoleMessageType.SpecialInfo);
+                            ConsoleWindow3.SendConsoleResponse($"Mod description: {info.description}" , ConsoleMessageType.SpecialInfo);
+                            ConsoleWindow3.SendConsoleResponse($"Mod version: {info.version}", ConsoleMessageType.SpecialInfo);
                         }
                         ConsoleWindow3.SendConsoleResponse("--------------------", ConsoleMessageType.SpecialInfo);
                     }
@@ -127,7 +151,7 @@ namespace ModLoader
                 }
                 else
                 {
-                    ConsoleWindow3.SendConsoleResponse("Modloader v0.0.0 by juanmuscaria", ConsoleMessageType.SpecialInfo);
+                    ConsoleWindow3.SendConsoleResponse($"Modloader v{Loader.MOD_LOADER_VERSION} by juanmuscaria", ConsoleMessageType.SpecialInfo);
                     ConsoleWindow3.SendConsoleResponse("Unknown subcommand " + command.Arguments[0].ToLower(), ConsoleMessageType.Error);
                 }
             }

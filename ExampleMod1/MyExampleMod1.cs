@@ -3,10 +3,14 @@
 namespace ExampleMod1
 {
     // This will be the entry point of the mod, you must extend IMod
-    public class MyExampleMod1 : IMod
+    [ModInfo("ExampleMod1",
+        "Example Mod 1",
+        "1.0.*",
+        description = "A simple mod that adds example1 command")]
+    public class MyExampleMod1 : Mod
     {
         //This method is called when your mod is being loaded
-        public void Load()
+        public override void Load()
         {
             //Add a new command to the game
             CommandManager.Manager.AddCommand(new ExampleCommand());

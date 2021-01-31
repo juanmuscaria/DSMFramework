@@ -11,5 +11,10 @@ namespace ModLoader.Patches.GameplayManager
         {
             ConsoleWindow3.Instance.AddCommandableObject(CommandManager.Manager);
         }
+
+        static void Postfix(global::GameplayManager __instance, GameEventManager ___gameEventManager)
+        {
+            ModGameEventManager.Manager.InjectEventsInto(___gameEventManager);
+        }
     }
 }

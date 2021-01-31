@@ -37,6 +37,7 @@ namespace ModLoader
                 } 
             }
 
+            //Sort the mod loading order
             FoundMods.Sort();
             foreach (var foundMod in FoundMods)
             {

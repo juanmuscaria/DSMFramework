@@ -8,6 +8,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mods", "Mods", "{CCF36A88-3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleMod1", "ExampleMod1\ExampleMod1.csproj", "{0A0BA294-ABFE-4CCA-92E4-D99284AC8AD3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleMod2", "ExampleMod2\ExampleMod2.csproj", "{7A04D941-EEA5-46E2-9FA3-1446C7BB67E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,8 +28,13 @@ Global
 		{0A0BA294-ABFE-4CCA-92E4-D99284AC8AD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A0BA294-ABFE-4CCA-92E4-D99284AC8AD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A0BA294-ABFE-4CCA-92E4-D99284AC8AD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A04D941-EEA5-46E2-9FA3-1446C7BB67E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A04D941-EEA5-46E2-9FA3-1446C7BB67E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A04D941-EEA5-46E2-9FA3-1446C7BB67E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A04D941-EEA5-46E2-9FA3-1446C7BB67E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0A0BA294-ABFE-4CCA-92E4-D99284AC8AD3} = {CCF36A88-3EF1-4A0F-8C45-28FB5009A5BF}
+		{7A04D941-EEA5-46E2-9FA3-1446C7BB67E4} = {CCF36A88-3EF1-4A0F-8C45-28FB5009A5BF}
 	EndGlobalSection
 EndGlobal

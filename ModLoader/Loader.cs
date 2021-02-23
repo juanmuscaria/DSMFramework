@@ -12,7 +12,7 @@ namespace ModLoader
 {
     public class Loader
     {
-        public const string MOD_LOADER_VERSION = "0.1.*";
+        public const string MOD_LOADER_VERSION = "0.2.*";
         private static readonly List<Mod> FoundMods = new List<Mod>();
         public static readonly List<Mod> LoadedMods = new List<Mod>();
 

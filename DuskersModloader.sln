@@ -4,15 +4,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModLoader", "ModLoader\ModL
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mods", "Mods", "{CCF36A88-3EF1-4A0F-8C45-28FB5009A5BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleMod1", "ExampleMod1\ExampleMod1.csproj", "{0A0BA294-ABFE-4CCA-92E4-D99284AC8AD3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleMod2", "ExampleMod2\ExampleMod2.csproj", "{7A04D941-EEA5-46E2-9FA3-1446C7BB67E4}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tainted", "Tainted", "{FDF14829-C1AF-4753-A9F2-78C396124120}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass-linux", "tainted\Assembly-CSharp-firstpass-linux\Assembly-CSharp-firstpass-linux.csproj", "{146A110D-4903-4763-8E58-770EF2F57672}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleMod1", "Examples\ExampleMod1\ExampleMod1.csproj", "{0A0BA294-ABFE-4CCA-92E4-D99284AC8AD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass-windows", "tainted\Assembly-CSharp-firstpass-windows\Assembly-CSharp-firstpass-windows.csproj", "{FF9E0ED9-831F-406C-9CC9-AB6632BFFBF5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleMod2", "Examples\ExampleMod2\ExampleMod2.csproj", "{7A04D941-EEA5-46E2-9FA3-1446C7BB67E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass-linux", "Tainted\Assembly-CSharp-firstpass-linux\Assembly-CSharp-firstpass-linux.csproj", "{146A110D-4903-4763-8E58-770EF2F57672}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass-windows", "Tainted\Assembly-CSharp-firstpass-windows\Assembly-CSharp-firstpass-windows.csproj", "{FF9E0ED9-831F-406C-9CC9-AB6632BFFBF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

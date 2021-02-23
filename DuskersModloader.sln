@@ -2,13 +2,17 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModLoader", "ModLoader\ModLoader.csproj", "{65C06865-5AA3-42C9-B905-D7BEBEEADBFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Duskers-Assembly-CSharp", "Duskers-Assembly-CSharp\Duskers-Assembly-CSharp.csproj", "{146A110D-4903-4763-8E58-770EF2F57672}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mods", "Mods", "{CCF36A88-3EF1-4A0F-8C45-28FB5009A5BF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleMod1", "ExampleMod1\ExampleMod1.csproj", "{0A0BA294-ABFE-4CCA-92E4-D99284AC8AD3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleMod2", "ExampleMod2\ExampleMod2.csproj", "{7A04D941-EEA5-46E2-9FA3-1446C7BB67E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tainted", "Tainted", "{FDF14829-C1AF-4753-A9F2-78C396124120}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass-linux", "tainted\Assembly-CSharp-firstpass-linux\Assembly-CSharp-firstpass-linux.csproj", "{146A110D-4903-4763-8E58-770EF2F57672}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass-windows", "tainted\Assembly-CSharp-firstpass-windows\Assembly-CSharp-firstpass-windows.csproj", "{FF9E0ED9-831F-406C-9CC9-AB6632BFFBF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,10 +24,6 @@ Global
 		{65C06865-5AA3-42C9-B905-D7BEBEEADBFC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{65C06865-5AA3-42C9-B905-D7BEBEEADBFC}.Debug|Any CPU.ActiveCfg = Release|Any CPU
 		{65C06865-5AA3-42C9-B905-D7BEBEEADBFC}.Debug|Any CPU.Build.0 = Release|Any CPU
-		{146A110D-4903-4763-8E58-770EF2F57672}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{146A110D-4903-4763-8E58-770EF2F57672}.Release|Any CPU.Build.0 = Release|Any CPU
-		{146A110D-4903-4763-8E58-770EF2F57672}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{146A110D-4903-4763-8E58-770EF2F57672}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{0A0BA294-ABFE-4CCA-92E4-D99284AC8AD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0A0BA294-ABFE-4CCA-92E4-D99284AC8AD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A0BA294-ABFE-4CCA-92E4-D99284AC8AD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -32,9 +32,19 @@ Global
 		{7A04D941-EEA5-46E2-9FA3-1446C7BB67E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A04D941-EEA5-46E2-9FA3-1446C7BB67E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A04D941-EEA5-46E2-9FA3-1446C7BB67E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{146A110D-4903-4763-8E58-770EF2F57672}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{146A110D-4903-4763-8E58-770EF2F57672}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{146A110D-4903-4763-8E58-770EF2F57672}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{146A110D-4903-4763-8E58-770EF2F57672}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF9E0ED9-831F-406C-9CC9-AB6632BFFBF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF9E0ED9-831F-406C-9CC9-AB6632BFFBF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF9E0ED9-831F-406C-9CC9-AB6632BFFBF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF9E0ED9-831F-406C-9CC9-AB6632BFFBF5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0A0BA294-ABFE-4CCA-92E4-D99284AC8AD3} = {CCF36A88-3EF1-4A0F-8C45-28FB5009A5BF}
 		{7A04D941-EEA5-46E2-9FA3-1446C7BB67E4} = {CCF36A88-3EF1-4A0F-8C45-28FB5009A5BF}
+		{146A110D-4903-4763-8E58-770EF2F57672} = {FDF14829-C1AF-4753-A9F2-78C396124120}
+		{FF9E0ED9-831F-406C-9CC9-AB6632BFFBF5} = {FDF14829-C1AF-4753-A9F2-78C396124120}
 	EndGlobalSection
 EndGlobal

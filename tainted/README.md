@@ -1,0 +1,2 @@
+# What's that?
+a convenient place for me to put all tainted assets for the modloader, unfortunately I can't redistribute decompiled game code, so you will have to do it by yourself and follow the patching instructions. 

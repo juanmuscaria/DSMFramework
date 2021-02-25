@@ -7,6 +7,8 @@ This is a work in progress modloader for Duskers.
 * Open Duskers local files on steam
 * Navigate to Duskers_Data > Mamaged
 * **Backup or Rename Assembly-CSharp-firstpass.dll**
+* **Backup your game data**
+* **Backup your game data again just to be sure**
 * Drop the new Assembly-CSharp-firstpass.dll together with 0Harmony.dll and ModLoader.dll there
 ## Install Mods
 * Open Duskers local files on steam

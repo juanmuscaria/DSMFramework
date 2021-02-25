@@ -11,8 +11,10 @@ namespace DoorCharger
     {
         public override void Load()
         {
+            //Registers our upgrade in the game
             ModUpgradeManager.Manager.RegisterDroneUpgrade(new DoorChargerUpgradeContainer());
-            ModUpgradeManager.Manager.RegisterModificationFor(typeof(DoorChargerUpgrade),new AddChargeMod());
+            //Adds a modification for the modification menu allowing player to buy more chargers
+            ModUpgradeManager.Manager.RegisterModificationFor(typeof(DoorChargerUpgrade), new AddChargeMod());
         }
     }
 }

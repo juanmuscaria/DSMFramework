@@ -7,7 +7,9 @@ namespace ModLoader.Patches.GameFileHelper
     [HarmonyPatch("GetBaseGameFileLocation")]
     public class GetBaseGameFileLocation
     {
-        static void Postfix(ref string __result)
+        // ReSharper disable once InconsistentNaming
+        // ReSharper disable once UnusedMember.Local
+        private static void Postfix(ref string __result)
         {
             __result = Application.persistentDataPath + Loader.UNIQUE_MODLOADER_IDENT;
         }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -10,22 +9,16 @@ using Random = System.Random;
 namespace ModLoader.Patches.DroneManager
 {
     [HarmonyPatch(typeof(global::DroneManager))]
-    [HarmonyPatch("RandomlyChooseUpgrades", new Type[]
-    {
-        typeof(List<Drone>),
-        typeof(int),
-        typeof(int),
-        typeof(bool),
-        typeof(bool),
-        typeof(Random)
-    })]
+    [HarmonyPatch("RandomlyChooseUpgrades", typeof(List<Drone>), typeof(int), typeof(int), typeof(bool), typeof(bool),
+        typeof(Random))]
     public class RandomlyChooseUpgrades
     {
-        static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        // ReSharper disable once InconsistentNaming
+        // ReSharper disable once UnusedMember.Local
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             var codes = new List<CodeInstruction>(instructions);
             for (var i = 0; i < codes.Count; i++)
-            {
                 if (codes[i].opcode.Equals(OpCodes.Ldc_I4_S))
                 {
                     Debug.Log($"found possible injection point {codes[i]}");
@@ -35,9 +28,8 @@ namespace ModLoader.Patches.DroneManager
                         codes[i].operand = ModUpgradeManager.Manager.GetUpgradeCount();
                     }
                 }
-            }
+
             return codes.AsEnumerable();
         }
     }
-    
 }

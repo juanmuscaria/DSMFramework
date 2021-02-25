@@ -9,7 +9,9 @@ namespace ModLoader.Patches.ModificationsHelper
     [HarmonyPatch("LoadModifications")]
     public class LoadModifications
     {
-        static void Postfix(Dictionary<Type, List<IModification>> ____modificationsByType)
+        // ReSharper disable once InconsistentNaming
+        // ReSharper disable once UnusedMember.Local
+        private static void Postfix(Dictionary<Type, List<IModification>> ____modificationsByType)
         {
             ModUpgradeManager.Manager.InjectModifications(____modificationsByType);
         }

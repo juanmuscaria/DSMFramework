@@ -7,14 +7,18 @@ namespace ModLoader.Modding
     public class ModGameEventManager
     {
         /// <summary>
-        /// The global instance of ModGameEventManager
+        ///     The global instance of ModGameEventManager
         /// </summary>
         public static readonly ModGameEventManager Manager = new ModGameEventManager();
+
         private readonly List<Type> events = new List<Type>();
-        private ModGameEventManager(){}
+
+        private ModGameEventManager()
+        {
+        }
 
         /// <summary>
-        /// Registers your custom random event into the game!
+        ///     Registers your custom random event into the game!
         /// </summary>
         /// <param name="eventType">Your event class, it must extend BaseGameEvent and have a public empty constructor</param>
         /// <exception cref="ArgumentException">If the class does not extend BaseGameEvent or no public constructor found</exception>
@@ -26,14 +30,12 @@ namespace ModLoader.Modding
                 throw new ArgumentException("No public empty constructor found!");
             events.Add(eventType);
         }
-        
+
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         internal void InjectEventsInto(GameEventManager manager)
         {
             foreach (var @event in events)
-            {
-                manager.AddEvent((BaseGameEvent)@event.GetConstructor(Type.EmptyTypes).Invoke(null));
-            }
+                manager.AddEvent((BaseGameEvent) @event.GetConstructor(Type.EmptyTypes).Invoke(null));
         }
     }
 }

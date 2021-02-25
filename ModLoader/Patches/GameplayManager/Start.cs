@@ -7,12 +7,16 @@ namespace ModLoader.Patches.GameplayManager
     [HarmonyPatch("Start")]
     public class Start
     {
-        static void Prefix(global::GameplayManager __instance)
+        // ReSharper disable once InconsistentNaming
+        // ReSharper disable once UnusedMember.Local
+        private static void Prefix(global::GameplayManager __instance)
         {
             ConsoleWindow3.Instance.AddCommandableObject(CommandManager.Manager);
         }
-
-        static void Postfix(global::GameplayManager __instance, GameEventManager ___gameEventManager)
+        
+        // ReSharper disable once UnusedMember.Local
+        // ReSharper disable once InconsistentNaming
+        private static void Postfix(global::GameplayManager __instance, GameEventManager ___gameEventManager)
         {
             ModGameEventManager.Manager.InjectEventsInto(___gameEventManager);
         }

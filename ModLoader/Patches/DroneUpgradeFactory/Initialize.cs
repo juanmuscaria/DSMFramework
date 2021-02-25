@@ -8,7 +8,9 @@ namespace ModLoader.Patches.DroneUpgradeFactory
     [HarmonyPatch("Initialize")]
     public class Initialize
     {
-        static void Prefix(List<DroneUpgradeDefinition> ____upgradeDefinitions, bool ____initialized)
+        // ReSharper disable once InconsistentNaming
+        // ReSharper disable once UnusedMember.Local
+        private static void Prefix(List<DroneUpgradeDefinition> ____upgradeDefinitions, bool ____initialized)
         {
             if (____initialized)
                 return;

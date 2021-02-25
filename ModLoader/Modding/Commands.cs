@@ -6,22 +6,14 @@ namespace ModLoader.Modding
     public class CommandManager : ICommandable
     {
         /// <summary>
-        /// The global instance of CommandManager
+        ///     The global instance of CommandManager
         /// </summary>
         public static readonly CommandManager Manager = new CommandManager();
+
+        private readonly List<BaseCommand> _commands = new List<BaseCommand>();
+
         private CommandManager()
         {
-        }
-
-        private List<BaseCommand> _commands = new List<BaseCommand>();
-
-        /// <summary>
-        /// Adds your custom command into the game.
-        /// </summary>
-        /// <param name="command">You command instance</param>
-        public void AddCommand(BaseCommand command)
-        {
-            _commands.Add(command);
         }
 
         public List<CommandDefinition> QueryAvailableCommands()
@@ -48,24 +40,37 @@ namespace ModLoader.Modding
             return new List<CommandDefinition>();
         }
 
-        public string CommandHeader { get; }
+        public string CommandHeader => "";
         public bool IsPrimaryCommandContext { get; set; }
+
+        /// <summary>
+        ///     Adds your custom command into the game.
+        /// </summary>
+        /// <param name="command">You command instance</param>
+        public void AddCommand(BaseCommand command)
+        {
+            _commands.Add(command);
+        }
     }
-    
+
     /// <summary>
-    /// An base class that custom mod commands must extend.
+    ///     An base class that custom mod commands must extend.
     /// </summary>
     public abstract class BaseCommand : CommandDefinition
     {
+        protected BaseCommand(string name, string usage) : base(name, usage)
+        {
+        }
 
-        protected BaseCommand(string name, string usage) : base(name, usage) { }
-        
         /// <summary>
-        /// This method is executed when your command is called by the user
+        ///     This method is executed when your command is called by the user
         /// </summary>
         /// <param name="command">The context of the current executed command</param>
         /// <param name="partOfMultiCommand">true if the command is part of a multi command execution</param>
-        /// <returns>true if the command was handled. returning false will continue the search for any other command matching the same name</returns>
+        /// <returns>
+        ///     true if the command was handled. returning false will continue the search for any other command matching the
+        ///     same name
+        /// </returns>
         public abstract bool Execute(ExecutedCommand command, bool partOfMultiCommand);
     }
 }

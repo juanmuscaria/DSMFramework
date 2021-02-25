@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Xml;
 using HarmonyLib;
 using ModLoader.Modding;
 using UnityEngine;
@@ -13,12 +11,18 @@ namespace ModLoader
     public class Loader
     {
         public const string MOD_LOADER_VERSION = "0.2.*";
+        public const string UNIQUE_MODLOADER_IDENT = "-Modded";
         private static readonly List<Mod> FoundMods = new List<Mod>();
         public static readonly List<Mod> LoadedMods = new List<Mod>();
+        internal static bool Tainted = false;
 
         //Called from Steamworks.SteamAPI#Init() method
         public static void Start()
         {
+            //Load additional libraries
+            //string managedPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            //Assembly.Load(Path.Combine(managedPath ?? throw new InvalidOperationException(), "Newtonsoft.Json.dll"));
+            
             //Load our patches
             var harmony = new Harmony("com.juanmuscaria.ModLoader"); 
             harmony.PatchAll(); 
@@ -44,6 +48,8 @@ namespace ModLoader
                 try
                 {
                     foundMod.Load();
+                    if (foundMod.Taint())
+                        Tainted = true;
                     LoadedMods.Add(foundMod);
                 }
                 catch (Exception e)
@@ -52,7 +58,11 @@ namespace ModLoader
                     Debug.LogError(e);
                 }
             }
+            
+            //Finish loading some stuff and freeze modloader registry
             CommandManager.Manager.AddCommand(new ModloaderCommand());
+            
+            ModUpgradeManager.Manager.Freeze();
         }
 
         private static bool ProcessType(Type type)

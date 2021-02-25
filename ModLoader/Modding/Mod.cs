@@ -12,6 +12,11 @@ namespace ModLoader.Modding
             //TODO: Add dependency resolving
             return ModInfo.OfMod(this).loadingPriority.CompareTo(ModInfo.OfMod(other).loadingPriority);
         }
+
+        public bool Taint()
+        {
+            return true;
+        }
     }
     
     

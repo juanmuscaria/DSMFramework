@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass-l
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass-windows", "Tainted\Assembly-CSharp-firstpass-windows\Assembly-CSharp-firstpass-windows.csproj", "{FF9E0ED9-831F-406C-9CC9-AB6632BFFBF5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoorCharger", "Examples\DoorCharger\DoorCharger.csproj", "{D96C0BD7-7BD0-41B8-B7D5-4CA3377DA52A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,11 +42,16 @@ Global
 		{FF9E0ED9-831F-406C-9CC9-AB6632BFFBF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF9E0ED9-831F-406C-9CC9-AB6632BFFBF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF9E0ED9-831F-406C-9CC9-AB6632BFFBF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D96C0BD7-7BD0-41B8-B7D5-4CA3377DA52A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D96C0BD7-7BD0-41B8-B7D5-4CA3377DA52A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D96C0BD7-7BD0-41B8-B7D5-4CA3377DA52A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D96C0BD7-7BD0-41B8-B7D5-4CA3377DA52A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0A0BA294-ABFE-4CCA-92E4-D99284AC8AD3} = {CCF36A88-3EF1-4A0F-8C45-28FB5009A5BF}
 		{7A04D941-EEA5-46E2-9FA3-1446C7BB67E4} = {CCF36A88-3EF1-4A0F-8C45-28FB5009A5BF}
 		{146A110D-4903-4763-8E58-770EF2F57672} = {FDF14829-C1AF-4753-A9F2-78C396124120}
 		{FF9E0ED9-831F-406C-9CC9-AB6632BFFBF5} = {FDF14829-C1AF-4753-A9F2-78C396124120}
+		{D96C0BD7-7BD0-41B8-B7D5-4CA3377DA52A} = {CCF36A88-3EF1-4A0F-8C45-28FB5009A5BF}
 	EndGlobalSection
 EndGlobal

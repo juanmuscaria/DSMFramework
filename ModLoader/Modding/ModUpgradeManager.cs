@@ -44,7 +44,17 @@ namespace ModLoader.Modding
 
         public void InjectModifications(Dictionary<Type, List<IModification>> target)
         {
-            modificationsByType.ToList().ForEach(x => target.Add(x.Key, x.Value));
+            modificationsByType.ToList().ForEach(x =>
+            {
+                if (target.ContainsKey(x.Key))
+                {
+                    target[x.Key] = target[x.Key].Concat(x.Value).ToList();
+                }
+                else
+                {
+                    target.Add(x.Key, x.Value);
+                }
+            });
         }
 
         public void InjectDefinitions(List<DroneUpgradeDefinition> definitions)

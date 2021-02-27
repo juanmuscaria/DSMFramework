@@ -9,7 +9,7 @@ namespace ModLoader.Patches.DroneUpgradeFactory
     {
         // ReSharper disable once InconsistentNaming
         // ReSharper disable once UnusedMember.Local
-        private static bool Prefix(ref DroneUpgradeType type, int id, ref BaseDroneUpgrade __result)
+        private static bool Prefix(ref DroneUpgradeType type, int id, ref BaseDroneUpgrade __result, ref int ____nextUpgradeId)
         {
             //Handle modded drone upgrades
             if ((int) type >= ModUpgradeManager.BASE_MODDED_TYPE)
@@ -23,7 +23,16 @@ namespace ModLoader.Patches.DroneUpgradeFactory
                 }
 
                 __result = upgrade.MakeUpgrade(); //make a modded upgrade instance
-                __result.Id = id; //set galaxy file unique id, different from type id
+                if (id == -1) //Random upgrade generation
+                {
+                    //Get the next available id for save file
+                    __result.Id = ____nextUpgradeId++; //set galaxy file unique id, different from type id
+                    UniverseSaveFile.Save("LAST_DU_ID", ____nextUpgradeId);
+                }
+                else
+                {
+                    __result.Id = id; //set galaxy file unique id, different from type id
+                }
                 return false; //stop the execution and use our modded upgrade
             }
 

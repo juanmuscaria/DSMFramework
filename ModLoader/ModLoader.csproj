@@ -54,11 +54,13 @@
         <Compile Include="Modding\ModUpgradeManager.cs" />
         <Compile Include="Modding\ModGameEventManager.cs" />
         <Compile Include="Modding\XmlHelper.cs" />
+        <Compile Include="ModsMenu.cs" />
         <Compile Include="Patches\DroneManager\RandomlyChooseUpgrades.cs" />
         <Compile Include="Patches\DroneUpgradeFactory\CreateUpgradeInstance.cs" />
         <Compile Include="Patches\DroneUpgradeFactory\Initialize.cs" />
         <Compile Include="Patches\GameFileHelper\GetBaseGameFileLocation.cs" />
         <Compile Include="Patches\GameplayManager\Start.cs" />
+        <Compile Include="Patches\MainMenu\LoadMenu.cs" />
         <Compile Include="Patches\ModificationsHelper\LoadModifications.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>

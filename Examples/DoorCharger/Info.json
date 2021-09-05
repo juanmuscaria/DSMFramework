@@ -1,0 +1,9 @@
+{
+  "Id": "DoorCharger",
+  "DisplayName": "Door Charger",
+  "Author": "juanmuscaria",
+  "Version": "0.1",
+  "EntryMethod": "DoorCharger.DoorChargerMod.Load",
+  "Requirements": ["DSMFramework"],
+  "LoadAfter": ["DSMFramework"]
+}

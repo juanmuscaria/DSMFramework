@@ -1,0 +1,9 @@
+{
+  "Id": "ExampleMod2",
+  "DisplayName": "Example mod 2",
+  "Author": "juanmuscaria",
+  "Version": "0.1",
+  "EntryMethod": "ExampleMod2.MyExampleMod2.Load",
+  "Requirements": ["DSMFramework"],
+  "LoadAfter": ["DSMFramework"]
+}

@@ -15,9 +15,7 @@ namespace DSMFramework
             //Load our patches
             var harmony = new Harmony("com.juanmuscaria.DSMFramework");
             harmony.PatchAll();
-            
-            
-            CommandManager.Manager.AddCommand(new DsmfCommand());
+            ModCommandManager.Manager.AddCommand(new DsmfCommand());
         }
         
     }
@@ -26,6 +24,9 @@ namespace DSMFramework
     {
         public DsmfCommand() : base("dsmf", "dsmf <subcommand>")
         {
+            DetailedDescription.Add(new ConsoleMessage("Duskers Simple Modding Framework command interface", ConsoleMessageType.Info));
+            DetailedDescription.Add(new ConsoleMessage("Available subcommands:", ConsoleMessageType.Info));
+            DetailedDescription.Add(new ConsoleMessage("\t- mods: List all loaded mods.", ConsoleMessageType.Info));
         }
 
         public override bool Execute(ExecutedCommand command, bool partOfMultiCommand)

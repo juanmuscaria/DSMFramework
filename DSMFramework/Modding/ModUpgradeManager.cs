@@ -124,7 +124,13 @@ namespace DSMFramework.Modding
             XmlHelper.ObjectToFile(previousMappedDroneUpgrades,
                 Path.Combine(GameFileHelper.GetBaseGameFileLocation(), "modloader-droneUpgradeData.xml"));
         }
+        public List<ModDroneUpgradeContainer> GETAllModUpgrades()
+        {
+            return mappedDroneUpgrades.Values.ToList();
+        }
     }
+    
+  
 
     /// <summary>
     ///     Modded drone upgrades must be wrapped for data persistence, this class helps with the hard part of it
@@ -136,6 +142,7 @@ namespace DSMFramework.Modding
         public readonly int duration;
         public readonly int modifier;
         public readonly string name;
+        public readonly bool showInManual;
         public readonly DroneUpgradeClass upgradeClass;
         protected DroneUpgradeDefinition myDefinition;
 
@@ -148,8 +155,9 @@ namespace DSMFramework.Modding
         /// <param name="modifier">The modifier this upgrade applies to a drone, currently used by speed upgrade</param>
         /// <param name="duration">Duration of the upgrade, used by upgrades like stealthy, sonic, shield</param>
         /// <param name="upgradeClass">The class the upgrade belongs to</param>
+        /// <param name="showInManual">If true the upgrade commands will be added to the help manual</param>
         protected ModDroneUpgradeContainer(string name, string description, int cost, int modifier, int duration,
-            DroneUpgradeClass upgradeClass)
+            DroneUpgradeClass upgradeClass, bool showInManual)
         {
             this.name = name;
             this.description = description;
@@ -157,6 +165,7 @@ namespace DSMFramework.Modding
             this.modifier = modifier;
             this.duration = duration;
             this.upgradeClass = upgradeClass;
+            this.showInManual = showInManual;
         }
 
         /// <summary>
@@ -173,6 +182,7 @@ namespace DSMFramework.Modding
             cost = 3;
             modifier = 0;
             duration = 0;
+            showInManual = true;
         }
 
         /// <summary>
@@ -203,6 +213,7 @@ namespace DSMFramework.Modding
         /// <returns>Must returns a new modded drone upgrade using the registered definition</returns>
         public abstract BaseDroneUpgrade MakeUpgrade();
 
+        public abstract List<CommandDefinition> GetCommandDefinitions();
         /// <summary>
         ///     The definition of this drone upgrade, may be null if called before the game is fully loaded
         /// </summary>
@@ -211,5 +222,6 @@ namespace DSMFramework.Modding
         {
             return myDefinition;
         }
+        
     }
 }

@@ -10,7 +10,7 @@ namespace ExampleMod1
         public static void Load()
         {
             //Add a new command to the game
-            CommandManager.Manager.AddCommand(new ExampleCommand());
+            ModCommandManager.Manager.AddCommand(new ExampleCommand());
         }
     }
 

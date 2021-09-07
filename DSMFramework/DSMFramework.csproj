@@ -63,7 +63,8 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Loader.cs" />
-        <Compile Include="Modding\Commands.cs" />
+        <Compile Include="Modding\ModCommandManager.cs" />
+        <Compile Include="Modding\ModHelpMenuManager.cs" />
         <Compile Include="Modding\ModUpgradeManager.cs" />
         <Compile Include="Modding\ModGameEventManager.cs" />
         <Compile Include="Modding\XmlHelper.cs" />
@@ -72,6 +73,8 @@
         <Compile Include="Patches\DroneUpgradeFactory\Initialize.cs" />
         <Compile Include="Patches\GameFileHelper\GetBaseGameFileLocation.cs" />
         <Compile Include="Patches\GameplayManager\Start.cs" />
+        <Compile Include="Patches\HelpManualMenuHelper\BuildMenus.cs" />
+        <Compile Include="Patches\HelpManualMenuHelper\RefreshDroneUpdadeMenu.cs" />
         <Compile Include="Patches\ModificationsHelper\LoadModifications.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>

@@ -11,7 +11,7 @@ namespace DSMFramework.Patches.GameplayManager
         // ReSharper disable once UnusedMember.Local
         private static void Prefix(global::GameplayManager __instance)
         {
-            ConsoleWindow3.Instance.AddCommandableObject(CommandManager.Manager);
+            ConsoleWindow3.Instance.AddCommandableObject(ModCommandManager.Manager);
         }
         
         // ReSharper disable once UnusedMember.Local

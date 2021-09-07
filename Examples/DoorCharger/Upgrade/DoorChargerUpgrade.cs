@@ -11,10 +11,11 @@ namespace DoorCharger.Upgrade
     /// </summary>
     public class DoorChargerUpgrade : BaseDroneUpgrade, IStorageUpgrade
     {
-        private static List<CommandDefinition> _commandList;
+        private readonly ModDroneUpgradeContainer _myContainer;
 
-        public DoorChargerUpgrade(DroneUpgradeDefinition definition) : base(definition)
+        public DoorChargerUpgrade(DroneUpgradeDefinition definition, ModDroneUpgradeContainer myContainer) : base(definition)
         {
+            _myContainer = myContainer;
             Quantity = Capacity;
         }
 
@@ -36,14 +37,7 @@ namespace DoorCharger.Upgrade
 
         public override List<CommandDefinition> QueryAvailableCommands()
         {
-            if (_commandList == null)
-            {
-                _commandList = new List<CommandDefinition>();
-                _commandList.Add(new CommandDefinition("chargedoor",
-                    "Allows your drone to connect to a door and charge it", "chargedoor d14"));
-            }
-
-            return _commandList;
+            return _myContainer.GetCommandDefinitions();
         }
 
         public override void ExecuteCommand(ExecutedCommand command, bool partOfMultiCommand)
@@ -117,20 +111,29 @@ namespace DoorCharger.Upgrade
     /// </summary>
     public class DoorChargerUpgradeContainer : ModDroneUpgradeContainer
     {
+        private List<CommandDefinition> commandList =  new List<CommandDefinition>();
         public DoorChargerUpgradeContainer() :
             base("Door Charger",
                 "Allows your drone to connect to a door and charge it.",
                 4,
                 0,
                 0,
-                DroneUpgradeClass.Exploration)
+                DroneUpgradeClass.Exploration,
+                true)
         {
+            commandList.Add(new CommandDefinition("chargedoor",
+                "Allows your drone to connect to a door and charge it", "chargedoor d14"));
         }
 
         public override BaseDroneUpgrade MakeUpgrade()
         {
-            //Example all implementations must follow for creating a new upgrade intance
-            return new DoorChargerUpgrade(myDefinition);
+            //Example all implementations should follow for creating a new upgrade instance
+            return new DoorChargerUpgrade(myDefinition, this);
+        }
+
+        public override List<CommandDefinition> GetCommandDefinitions()
+        {
+            return commandList;
         }
     }
 

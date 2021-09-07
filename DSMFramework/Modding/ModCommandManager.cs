@@ -3,16 +3,16 @@ using System.Linq;
 
 namespace DSMFramework.Modding
 {
-    public class CommandManager : ICommandable
+    public class ModCommandManager : ICommandable
     {
         /// <summary>
         ///     The global instance of CommandManager
         /// </summary>
-        public static readonly CommandManager Manager = new CommandManager();
+        public static readonly ModCommandManager Manager = new ModCommandManager();
 
         private readonly List<BaseCommand> _commands = new List<BaseCommand>();
 
-        private CommandManager()
+        private ModCommandManager()
         {
         }
 

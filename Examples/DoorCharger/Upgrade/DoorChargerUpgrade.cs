@@ -118,8 +118,7 @@ namespace DoorCharger.Upgrade
                 4,
                 0,
                 0,
-                DroneUpgradeClass.Exploration,
-                true)
+                DroneUpgradeClass.Exploration)
         {
             commandList.Add(new CommandDefinition("chargedoor",
                 "Allows your drone to connect to a door and charge it", "chargedoor d14"));
@@ -128,7 +127,7 @@ namespace DoorCharger.Upgrade
         public override BaseDroneUpgrade MakeUpgrade()
         {
             //Example all implementations should follow for creating a new upgrade instance
-            return new DoorChargerUpgrade(myDefinition, this);
+            return new DoorChargerUpgrade(MyDefinition, this);
         }
 
         public override List<CommandDefinition> GetCommandDefinitions()

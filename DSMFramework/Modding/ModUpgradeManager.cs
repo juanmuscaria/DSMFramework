@@ -7,29 +7,35 @@ namespace DSMFramework.Modding
 {
     public class ModUpgradeManager
     {
-        public const int BASE_MODDED_TYPE = (int) DroneUpgradeType.NumberOfUpgrades + 1;
+        public const int BaseModdedType = (int) DroneUpgradeType.NumberOfUpgrades + 1;
         public static readonly ModUpgradeManager Manager = new ModUpgradeManager();
-        private readonly List<ModDroneUpgradeContainer> addedDroneUpgrades = new List<ModDroneUpgradeContainer>();
+        private readonly List<ModDroneUpgradeContainer> _addedDroneUpgrades = new List<ModDroneUpgradeContainer>();
 
-        private readonly Dictionary<int, ModDroneUpgradeContainer> mappedDroneUpgrades =
+        private readonly Dictionary<int, ModDroneUpgradeContainer> _mappedDroneUpgrades =
             new Dictionary<int, ModDroneUpgradeContainer>();
 
-        private readonly Dictionary<Type, List<IModification>> modificationsByType =
+        private readonly Dictionary<Type, List<IModification>> _modificationsByType =
             new Dictionary<Type, List<IModification>>();
 
-        private readonly Dictionary<string, int> previousMappedDroneUpgrades = new Dictionary<string, int>();
-        private bool frozen;
-        private int nextId = BASE_MODDED_TYPE;
+        private readonly Dictionary<string, int> _previousMappedDroneUpgrades = new Dictionary<string, int>();
+        private bool _frozen;
+        private int _nextId = BaseModdedType;
+        internal List<int> _alreadyTaken = new List<int>();
 
         private ModUpgradeManager()
         {
             var mapped = XmlHelper.FileToObject<Dictionary<string, int>>(
-                Path.Combine(GameFileHelper.GetBaseGameFileLocation(), "modloader-droneUpgradeData.xml"));
-            if (mapped != null)
-            {
-                previousMappedDroneUpgrades = mapped;
-                nextId = mapped["nextId"];
-            }
+                Path.Combine(GameFileHelper.GetBaseGameFileLocation(), "DSMF-droneUpgradeData.xml"));
+            // var takenIds = XmlHelper.FileToObject<List<int>>(
+            //     Path.Combine(GameFileHelper.GetBaseGameFileLocation(), "DSMF-droneUpgradeDataExtra.xml"));
+            if (mapped == null) return;
+            _previousMappedDroneUpgrades = mapped;
+            _nextId = mapped["nextId"];
+
+            // if (takenIds != null)
+            // {
+            //     alradyTaken = takenIds;
+            // }
         }
 
         /// <summary>
@@ -39,12 +45,12 @@ namespace DSMFramework.Modding
         /// <returns>The total amount of upgrades</returns>
         public int GetUpgradeCount()
         {
-            return nextId - 1;
+            return _nextId - 1;
         }
 
         public void InjectModifications(Dictionary<Type, List<IModification>> target)
         {
-            modificationsByType.ToList().ForEach(x =>
+            _modificationsByType.ToList().ForEach(x =>
             {
                 if (target.ContainsKey(x.Key))
                 {
@@ -59,7 +65,7 @@ namespace DSMFramework.Modding
 
         public void InjectDefinitions(List<DroneUpgradeDefinition> definitions)
         {
-            foreach (var upgrade in mappedDroneUpgrades) definitions.Add(upgrade.Value.GetDefinition());
+            definitions.AddRange(_mappedDroneUpgrades.Select(upgrade => upgrade.Value.GetDefinition()));
         }
 
         /// <summary>
@@ -72,10 +78,10 @@ namespace DSMFramework.Modding
         /// </exception>
         public void RegisterDroneUpgrade(ModDroneUpgradeContainer upgradeContainer)
         {
-            if (frozen)
+            if (_frozen)
                 throw new InvalidOperationException(
                     "Game data already frozen! This method can only be called during mod loading.");
-            addedDroneUpgrades.Add(upgradeContainer);
+            _addedDroneUpgrades.Add(upgradeContainer);
         }
 
         /// <summary>
@@ -85,9 +91,9 @@ namespace DSMFramework.Modding
         /// <param name="modification">An instance of the modification</param>
         public void RegisterModificationFor(Type modificationTarget, IModification modification)
         {
-            if (!modificationsByType.ContainsKey(modificationTarget))
-                modificationsByType[modificationTarget] = new List<IModification>();
-            modificationsByType[modificationTarget].Add(modification);
+            if (!_modificationsByType.ContainsKey(modificationTarget))
+                _modificationsByType[modificationTarget] = new List<IModification>();
+            _modificationsByType[modificationTarget].Add(modification);
         }
 
         /// <summary>
@@ -97,36 +103,56 @@ namespace DSMFramework.Modding
         /// <returns>The upgrade, null if it does not exist</returns>
         public ModDroneUpgradeContainer FromId(int id)
         {
-            return mappedDroneUpgrades.ContainsKey(id) ? mappedDroneUpgrades[id] : null;
+            return _mappedDroneUpgrades.ContainsKey(id) ? _mappedDroneUpgrades[id] : null;
         }
 
-        internal void Freeze()
+        internal void Freeze(IEnumerable<DroneUpgradeDefinition> otherDefinitions)
         {
-            frozen = true;
-            foreach (var upgrade in addedDroneUpgrades)
-                if (previousMappedDroneUpgrades.ContainsKey(upgrade.name))
+            _frozen = true;
+            // checks if other mods that does not use the framework added their own upgrades.
+            // To keep consistency if a mod added their on upgrade after an DSMF upgrade was already registered they will be overwritten by us.
+            foreach (var upgrade in otherDefinitions)
+            {
+                if (upgrade.Type > DroneUpgradeType.NumberOfUpgrades && !_alreadyTaken.Contains((int)upgrade.Type))
+                    _alreadyTaken.Add((int)upgrade.Type);
+            }
+            
+            foreach (var upgrade in _addedDroneUpgrades)
+                if (_previousMappedDroneUpgrades.ContainsKey(upgrade.Name))
                 {
-                    var id = previousMappedDroneUpgrades[upgrade.name]; //get the previously registered id
+                    var id = _previousMappedDroneUpgrades[upgrade.Name]; //get the previously registered id
                     upgrade.Register(id); //tells the upgrade to create it's definition
-                    mappedDroneUpgrades[id] = upgrade; //map it for id>upgrade for upgrade factory
+                    _mappedDroneUpgrades[id] = upgrade; //map it for id>upgrade for upgrade factory
                 }
                 else
                 {
-                    var id = nextId++; //get a new id
+                    var id = FindId(); //get a new id
                     //save it for reusing the next game restart so upgrades can be loaded from game save file
-                    previousMappedDroneUpgrades[upgrade.name] = id;
+                    _previousMappedDroneUpgrades[upgrade.Name] = id;
                     upgrade.Register(id); //tells the upgrade to create it's definition
-                    mappedDroneUpgrades[id] = upgrade; //map it for id>upgrade for upgrade factory
+                    _mappedDroneUpgrades[id] = upgrade; //map it for id>upgrade for upgrade factory
                 }
 
-            previousMappedDroneUpgrades["nextId"] = nextId; //save the next available id 
+            _previousMappedDroneUpgrades["nextId"] = _nextId; //save the next available id 
             //Save it into a file
-            XmlHelper.ObjectToFile(previousMappedDroneUpgrades,
-                Path.Combine(GameFileHelper.GetBaseGameFileLocation(), "modloader-droneUpgradeData.xml"));
+            XmlHelper.ObjectToFile(_previousMappedDroneUpgrades,
+                Path.Combine(GameFileHelper.GetBaseGameFileLocation(), "DSMF-droneUpgradeData.xml"));
+            // XmlHelper.ObjectToFile(alradyTaken,
+            //     Path.Combine(GameFileHelper.GetBaseGameFileLocation(), "DSMF-droneUpgradeDataExtra.xml"));
         }
-        public List<ModDroneUpgradeContainer> GETAllModUpgrades()
+
+        private int FindId()
         {
-            return mappedDroneUpgrades.Values.ToList();
+            while (true)
+            {
+                var id = _nextId++;
+                if (!_alreadyTaken.Contains(id))
+                    return id;
+            }
+        }
+        public IEnumerable<ModDroneUpgradeContainer> GETAllModUpgrades()
+        {
+            return _mappedDroneUpgrades.Values.ToList();
         }
     }
     
@@ -137,14 +163,13 @@ namespace DSMFramework.Modding
     /// </summary>
     public abstract class ModDroneUpgradeContainer
     {
-        public readonly int cost;
-        public readonly string description;
-        public readonly int duration;
-        public readonly int modifier;
-        public readonly string name;
-        public readonly bool showInManual;
-        public readonly DroneUpgradeClass upgradeClass;
-        protected DroneUpgradeDefinition myDefinition;
+        public readonly int Cost;
+        public readonly string Description;
+        public readonly int Duration;
+        public readonly int Modifier;
+        public readonly string Name;
+        public readonly DroneUpgradeClass UpgradeClass;
+        protected DroneUpgradeDefinition MyDefinition;
 
         /// <summary>
         ///     Creates a new container with the following properties
@@ -155,17 +180,15 @@ namespace DSMFramework.Modding
         /// <param name="modifier">The modifier this upgrade applies to a drone, currently used by speed upgrade</param>
         /// <param name="duration">Duration of the upgrade, used by upgrades like stealthy, sonic, shield</param>
         /// <param name="upgradeClass">The class the upgrade belongs to</param>
-        /// <param name="showInManual">If true the upgrade commands will be added to the help manual</param>
         protected ModDroneUpgradeContainer(string name, string description, int cost, int modifier, int duration,
-            DroneUpgradeClass upgradeClass, bool showInManual)
+            DroneUpgradeClass upgradeClass)
         {
-            this.name = name;
-            this.description = description;
-            this.cost = cost;
-            this.modifier = modifier;
-            this.duration = duration;
-            this.upgradeClass = upgradeClass;
-            this.showInManual = showInManual;
+            Name = name;
+            Description = description;
+            Cost = cost;
+            Modifier = modifier;
+            Duration = duration;
+            UpgradeClass = upgradeClass;
         }
 
         /// <summary>
@@ -176,13 +199,12 @@ namespace DSMFramework.Modding
         /// <param name="upgradeClass">The class the upgrade belongs to</param>
         protected ModDroneUpgradeContainer(string name, string description, DroneUpgradeClass upgradeClass)
         {
-            this.name = name;
-            this.description = description;
-            this.upgradeClass = upgradeClass;
-            cost = 3;
-            modifier = 0;
-            duration = 0;
-            showInManual = true;
+            Name = name;
+            Description = description;
+            UpgradeClass = upgradeClass;
+            Cost = 3;
+            Modifier = 0;
+            Duration = 0;
         }
 
         /// <summary>
@@ -194,17 +216,17 @@ namespace DSMFramework.Modding
         /// </param>
         internal void Register(int id)
         {
-            myDefinition = new DroneUpgradeDefinition(id.ToString(),
+            MyDefinition = new DroneUpgradeDefinition(id.ToString(),
                 "true",
-                name,
-                description,
+                Name,
+                Description,
                 "0",
                 "0",
-                cost.ToString(),
-                modifier.ToString(),
+                Cost.ToString(),
+                Modifier.ToString(),
                 "0",
-                duration.ToString(),
-                upgradeClass.ToString());
+                Duration.ToString(),
+                UpgradeClass.ToString());
         }
 
         /// <summary>
@@ -220,7 +242,7 @@ namespace DSMFramework.Modding
         /// <returns>The definition of this upgrade</returns>
         public DroneUpgradeDefinition GetDefinition()
         {
-            return myDefinition;
+            return MyDefinition;
         }
         
     }

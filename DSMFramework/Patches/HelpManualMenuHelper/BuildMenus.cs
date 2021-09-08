@@ -12,7 +12,7 @@ namespace DSMFramework.Patches.HelpManualMenuHelper
         // ReSharper disable once UnusedMember.Local
         public static void Postfix(global::HelpManualMenuHelper __instance)
         {
-            ModHelpMenuManager.Manager.AddModCommands(__instance);
+            ModHelpMenuManager.AddModCommands(__instance);
         }
     }
 }

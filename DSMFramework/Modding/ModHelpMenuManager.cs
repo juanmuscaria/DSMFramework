@@ -10,19 +10,19 @@ namespace DSMFramework.Modding
             
         }
 
-        internal void RefreshDroneUpgradeMenu(HelpManualMenuHelper menuHelper, bool useSimpleHelp, HelpManualMenu droneMenu)
+        internal static void RefreshDroneUpgradeMenu(HelpManualMenuHelper menuHelper, bool useSimpleHelp, HelpManualMenu droneMenu)
         {
             foreach (var modDroneUpgrade in ModUpgradeManager.Manager.GETAllModUpgrades())
             {
-                if ((GlobalSettings.DiscoveredUpgrades.Contains(modDroneUpgrade.GetDefinition().Type) ||
-                     useSimpleHelp) && modDroneUpgrade.showInManual)
+                if (GlobalSettings.DiscoveredUpgrades.Contains(modDroneUpgrade.GetDefinition().Type) ||
+                     useSimpleHelp)
                 {
                     menuHelper.AddCommands(droneMenu.MenuItems, modDroneUpgrade.GetCommandDefinitions());
                 }
             }
         }
 
-        internal void AddModCommands(HelpManualMenuHelper menuHelper)
+        internal static void AddModCommands(HelpManualMenuHelper menuHelper)
         {
             var basicCommands = menuHelper.GetFirstMenu().MenuItems["0"];
             var advancedCommands = menuHelper.GetFirstMenu().MenuItems["2"];

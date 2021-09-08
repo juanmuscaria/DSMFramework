@@ -40,6 +40,15 @@ namespace DSMFramework
             }
             else
             {
+                if (command.Arguments[0].ToLower().Equals("testdronerng") && GlobalSettings.cheatMode)
+                {
+                    int id = 4 + DroneManager.Instance.LootableDronesList.Count;
+                    foreach (Room room in DungeonManager.Instance.rooms)
+                    {
+                        DroneManager.Instance.PlaceLootableDroneInRoom(room, ref id, true);
+                        id++;
+                    }
+                }
                 // if (command.Arguments[0].ToLower().Equals("mods"))
                 // {
                 //     ConsoleWindow3.SendConsoleResponse($"Modloader v{Loader.MOD_LOADER_VERSION} by juanmuscaria",
@@ -65,7 +74,7 @@ namespace DSMFramework
                 //         ConsoleWindow3.SendConsoleResponse("You have no mod installed :(", ConsoleMessageType.Error);
                 //     }
                 // }
-                // else
+                else
                 {
                     ConsoleWindow3.SendConsoleResponse($"Modloader v{Loader.ModLoaderVersion} by juanmuscaria",
                         ConsoleMessageType.SpecialInfo);

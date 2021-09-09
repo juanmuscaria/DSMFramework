@@ -54,7 +54,7 @@ namespace DSMFramework.Modding
         /// <returns>The restored object</returns>
         public static T StringToObject<T>(string xml) where T : new()
         {
-            if (typeof(T).IsAssignableFrom(typeof(IDictionary)))
+            if (typeof(IDictionary).IsAssignableFrom(typeof(T)))
             {
                 var serializer = new XmlSerializer(typeof(List<Entry>));
                 var list = (List<Entry>) serializer.Deserialize(GenerateStreamFromString(xml));

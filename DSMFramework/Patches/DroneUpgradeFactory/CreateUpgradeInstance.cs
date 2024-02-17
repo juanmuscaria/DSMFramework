@@ -1,6 +1,7 @@
 using DSMFramework.Modding;
 using HarmonyLib;
 
+//TODO: Broken
 namespace DSMFramework.Patches.DroneUpgradeFactory
 {
     [HarmonyPatch(typeof(global::DroneUpgradeFactory))]
@@ -9,7 +10,7 @@ namespace DSMFramework.Patches.DroneUpgradeFactory
     {
         // ReSharper disable once InconsistentNaming
         // ReSharper disable once UnusedMember.Local
-        private static bool Prefix(ref DroneUpgradeType type, int id, ref BaseDroneUpgrade __result, ref int ____nextUpgradeId)
+        private static bool Prefix(ref DroneUpgradeType type, int id, ref BaseDroneUpgrade __result)
         {
             //Handle modded drone upgrades
             if ((int) type < ModUpgradeManager.BaseModdedType ||
@@ -28,8 +29,8 @@ namespace DSMFramework.Patches.DroneUpgradeFactory
             if (id == -1) //Random upgrade generation
             {
                 //Get the next available id for save file
-                __result.Id = ____nextUpgradeId++; //set galaxy file unique id, different from type id
-                UniverseSaveFile.Save("LAST_DU_ID", ____nextUpgradeId);
+                __result.Id = UniverseSaveFile.Get("LAST_DU_ID", 1); //set galaxy file unique id, different from type id
+                UniverseSaveFile.Save("LAST_DU_ID", __result.Id + 1);
             }
             else
             {

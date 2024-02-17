@@ -1,6 +1,7 @@
 using DSMFramework.Modding;
 using HarmonyLib;
-
+using UnityEngine;
+//TODO: BROKEN
 namespace DSMFramework.Patches.HelpManualMenuHelper
 {
     [HarmonyPatch(typeof(global::HelpManualMenuHelper))]

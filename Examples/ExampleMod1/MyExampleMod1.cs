@@ -1,13 +1,15 @@
 ﻿
 using DSMFramework.Modding;
+using BepInEx;
 
 namespace ExampleMod1
 {
     // This will be the entry point of the mod
-    public static class MyExampleMod1
+    [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+    public class Plugin : BaseUnityPlugin
     {
         //This method is called when your mod is being loaded
-        public static void Load()
+        private void Awake()
         {
             //Add a new command to the game
             ModCommandManager.Manager.AddCommand(new ExampleCommand());

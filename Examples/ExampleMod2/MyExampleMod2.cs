@@ -1,11 +1,14 @@
 ﻿using DSMFramework.Modding;
 using UnityEngine;
+using BepInEx;
 
 namespace ExampleMod2
 {
-    public static class MyExampleMod2
+
+    [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+    public class Plugin : BaseUnityPlugin
     {
-        public static void Load()
+        private void Awake()
         {
             //Register our event into the game, a new instance is created every time a new dungeon (derelict) loads.
             ModGameEventManager.Manager.RegisterEvent(typeof(ExampleEvent));

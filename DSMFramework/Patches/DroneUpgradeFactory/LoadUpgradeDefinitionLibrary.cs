@@ -12,7 +12,8 @@ namespace DSMFramework.Patches.DroneUpgradeFactory
         // ReSharper disable once UnusedMember.Local
         private static void Postfix(List<DroneUpgradeDefinition> ____upgradeDefinitions)
         {
-            ModUpgradeManager.Manager.Freeze(____upgradeDefinitions);
+            Plugin.LOGGER.LogMessage("LoadUpgradeDefinitionLibrary");
+            ModUpgradeManager.Manager.MapAndAddModdedDroneDefinitions(____upgradeDefinitions);
             ModUpgradeManager.Manager.InjectDefinitions(____upgradeDefinitions);
         }
     }

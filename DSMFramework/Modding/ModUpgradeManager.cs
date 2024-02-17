@@ -7,8 +7,9 @@ namespace DSMFramework.Modding
 {
     public class ModUpgradeManager
     {
-        public const int BaseModdedType = (int) DroneUpgradeType.NumberOfUpgrades + 1;
         public static readonly ModUpgradeManager Manager = new ModUpgradeManager();
+
+        public const int BaseModdedType = (int) DroneUpgradeType.NumberOfUpgrades + 1;
         private readonly List<ModDroneUpgradeContainer> _addedDroneUpgrades = new List<ModDroneUpgradeContainer>();
 
         private readonly Dictionary<int, ModDroneUpgradeContainer> _mappedDroneUpgrades =
@@ -17,25 +18,13 @@ namespace DSMFramework.Modding
         private readonly Dictionary<Type, List<IModification>> _modificationsByType =
             new Dictionary<Type, List<IModification>>();
 
-        private readonly Dictionary<string, int> _previousMappedDroneUpgrades = new Dictionary<string, int>();
+        private Dictionary<string, int> _previousMappedDroneUpgrades = new Dictionary<string, int>();
         private bool _frozen;
         private int _nextId = BaseModdedType;
         internal List<int> _alreadyTaken = new List<int>();
 
         private ModUpgradeManager()
         {
-            var mapped = XmlHelper.FileToObject<Dictionary<string, int>>(
-                Path.Combine(GameFileHelper.GetBaseGameFileLocation(), "DSMF-droneUpgradeData.xml"));
-            // var takenIds = XmlHelper.FileToObject<List<int>>(
-            //     Path.Combine(GameFileHelper.GetBaseGameFileLocation(), "DSMF-droneUpgradeDataExtra.xml"));
-            if (mapped == null) return;
-            _previousMappedDroneUpgrades = mapped;
-            _nextId = mapped["nextId"];
-
-            // if (takenIds != null)
-            // {
-            //     alradyTaken = takenIds;
-            // }
         }
 
         /// <summary>
@@ -73,14 +62,14 @@ namespace DSMFramework.Modding
         /// </summary>
         /// <param name="upgradeContainer">The container of the upgrade</param>
         /// <exception cref="InvalidOperationException">
-        ///     Will be thrown if the game data is already frozen
+        ///     Will be thrown if the game is already making use of droge upgrades
         ///     This method can be only called during mod loading
         /// </exception>
         public void RegisterDroneUpgrade(ModDroneUpgradeContainer upgradeContainer)
         {
             if (_frozen)
                 throw new InvalidOperationException(
-                    "Game data already frozen! This method can only be called during mod loading.");
+                    "Drone Upgrades are already in use by the game, try registering your upgrades before the game finishes loading.");
             _addedDroneUpgrades.Add(upgradeContainer);
         }
 
@@ -106,11 +95,15 @@ namespace DSMFramework.Modding
             return _mappedDroneUpgrades.ContainsKey(id) ? _mappedDroneUpgrades[id] : null;
         }
 
-        internal void Freeze(IEnumerable<DroneUpgradeDefinition> otherDefinitions)
+        internal void MapAndAddModdedDroneDefinitions(IEnumerable<DroneUpgradeDefinition> otherDefinitions)
         {
+            if (_frozen) {
+                return;
+            }
+            LoadMapping();
             _frozen = true;
             // checks if other mods that does not use the framework added their own upgrades.
-            // To keep consistency if a mod added their on upgrade after an DSMF upgrade was already registered they will be overwritten by us.
+            // To keep consistency if a mod added their on upgrade after an DSMF upgrade was already registered with such id they will be overwritten by us.
             foreach (var upgrade in otherDefinitions)
             {
                 if (upgrade.Type > DroneUpgradeType.NumberOfUpgrades && !_alreadyTaken.Contains((int)upgrade.Type))
@@ -121,24 +114,23 @@ namespace DSMFramework.Modding
                 if (_previousMappedDroneUpgrades.ContainsKey(upgrade.Name))
                 {
                     var id = _previousMappedDroneUpgrades[upgrade.Name]; //get the previously registered id
-                    upgrade.Register(id); //tells the upgrade to create it's definition
-                    _mappedDroneUpgrades[id] = upgrade; //map it for id>upgrade for upgrade factory
+                    upgrade.Register(id); //tells the upgrade to create its definition
+                    _mappedDroneUpgrades[id] = upgrade; //map it for id > upgrade for upgrade factory
                 }
                 else
                 {
                     var id = FindId(); //get a new id
                     //save it for reusing the next game restart so upgrades can be loaded from game save file
                     _previousMappedDroneUpgrades[upgrade.Name] = id;
-                    upgrade.Register(id); //tells the upgrade to create it's definition
+                    upgrade.Register(id); //tells the upgrade to create its definition
                     _mappedDroneUpgrades[id] = upgrade; //map it for id>upgrade for upgrade factory
                 }
 
             _previousMappedDroneUpgrades["nextId"] = _nextId; //save the next available id 
             //Save it into a file
-            XmlHelper.ObjectToFile(_previousMappedDroneUpgrades,
-                Path.Combine(GameFileHelper.GetBaseGameFileLocation(), "DSMF-droneUpgradeData.xml"));
-            // XmlHelper.ObjectToFile(alradyTaken,
-            //     Path.Combine(GameFileHelper.GetBaseGameFileLocation(), "DSMF-droneUpgradeDataExtra.xml"));
+            string path = Path.Combine(GameFileHelper.GetBaseGameFileLocation(), "DSMF-droneUpgradeData.xml");
+            Plugin.LOGGER.LogMessage("Saving to " + path);
+            XmlHelper.ObjectToFile(_previousMappedDroneUpgrades, path);
         }
 
         private int FindId()
@@ -150,9 +142,17 @@ namespace DSMFramework.Modding
                     return id;
             }
         }
-        public IEnumerable<ModDroneUpgradeContainer> GETAllModUpgrades()
+        public IEnumerable<ModDroneUpgradeContainer> GetAllModUpgrades()
         {
             return _mappedDroneUpgrades.Values.ToList();
+        }
+
+        internal void LoadMapping() {
+            var mapped = XmlHelper.FileToObject<Dictionary<string, int>>(
+            Path.Combine(GameFileHelper.GetBaseGameFileLocation(), "DSMF-droneUpgradeData.xml"));
+            if (mapped == null) return;
+            _previousMappedDroneUpgrades = mapped;
+            _nextId = mapped["nextId"];
         }
     }
     

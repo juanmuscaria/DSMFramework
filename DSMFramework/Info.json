@@ -1,7 +1,0 @@
-{
-  "Id": "DSMFramework",
-  "DisplayName": "Duskers Simple Modding Framework",
-  "Author": "juanmuscaria",
-  "Version": "0.1",
-  "EntryMethod": "DSMFramework.Loader.Load"
-}

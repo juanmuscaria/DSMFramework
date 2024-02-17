@@ -10,3 +10,5 @@ riderModule.iml
 /.vs/
 /DuskersSimpleModdingFramework.sln.DotSettings.user
 /docs/
+
+*.dll

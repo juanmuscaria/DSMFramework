@@ -32,7 +32,7 @@ namespace DSMFramework.Modding
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        internal void InjectEventsInto(GameEventManager manager)
+        public void InjectEventsInto(GameEventManager manager)
         {
             foreach (var @event in events)
                 manager.AddEvent((BaseGameEvent) @event.GetConstructor(Type.EmptyTypes).Invoke(null));

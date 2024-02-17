@@ -1,1 +1,0 @@
-Thow all dlls inside (duskers installation dir)/Duskers_data/Managed here

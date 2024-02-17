@@ -1,16 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net35</TargetFramework>
+    <AssemblyName>DSMFramework</AssemblyName>
+    <Description>Duskers Simple Modding Framework</Description>
+    <Version>0.0.2</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
     <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{65C06865-5AA3-42C9-B905-D7BEBEEADBFC}</ProjectGuid>
         <OutputType>Library</OutputType>
-        <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>DSMFramework</RootNamespace>
-        <AssemblyName>DSMFramework</AssemblyName>
         <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-        <FileAlignment>512</FileAlignment>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,69 +33,25 @@
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
-    <ItemGroup>
-        <Reference Include="0Harmony, Version=2.0.2.0, Culture=neutral, PublicKeyToken=null">
-            <HintPath>..\libs\0Harmony.dll</HintPath>
-            <Private>false</Private>
-        </Reference>
-        <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\libs\Assembly-CSharp.dll</HintPath>
-            <Private>false</Private>
-        </Reference>
-        <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\libs\Assembly-CSharp-firstpass.dll</HintPath>
-            <Private>false</Private>
-        </Reference>
-        <Reference Include="System" />
-        <Reference Include="System.Core" />
-        <Reference Include="System.Data" />
-        <Reference Include="System.Xml" />
-        <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\libs\UnityEngine.dll</HintPath>
-            <Private>false</Private>
-        </Reference>
-        <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\libs\UnityEngine.UI.dll</HintPath>
-            <Private>false</Private>
-        </Reference>
-        <Reference Include="UnityModManager, Version=0.23.5.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\libs\UnityModManager.dll</HintPath>
-            <Private>false</Private>
-        </Reference>
-    </ItemGroup>
-    <ItemGroup>
-        <Compile Include="Loader.cs" />
-        <Compile Include="Modding\ModCommandManager.cs" />
-        <Compile Include="Modding\ModHelpMenuManager.cs" />
-        <Compile Include="Modding\ModUpgradeManager.cs" />
-        <Compile Include="Modding\ModGameEventManager.cs" />
-        <Compile Include="Modding\XmlHelper.cs" />
-        <Compile Include="Patches\DroneManager\RandomlyChooseUpgrades.cs" />
-        <Compile Include="Patches\DroneUpgradeFactory\CreateUpgradeInstance.cs" />
-        <Compile Include="Patches\DroneUpgradeFactory\LoadUpgradeDefinitionLibrary.cs" />
-        <Compile Include="Patches\GameFileHelper\GetBaseGameFileLocation.cs" />
-        <Compile Include="Patches\GameplayManager\Start.cs" />
-        <Compile Include="Patches\HelpManualMenuHelper\BuildMenus.cs" />
-        <Compile Include="Patches\HelpManualMenuHelper\RefreshDroneUpdadeMenu.cs" />
-        <Compile Include="Patches\ModificationsHelper\LoadModifications.cs" />
-        <Compile Include="Properties\AssemblyInfo.cs" />
-    </ItemGroup>
-    <ItemGroup>
-      <Content Include="Info.json" />
-    </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-         Other similar extension points exist, see Microsoft.Common.targets.
-    <Target Name="BeforeBuild">
-    </Target>
-    -->
-    <Target Name="AfterBuild">
-        <Copy SourceFiles="Info.json" DestinationFolder="$(TargetDir)\packing" SkipUnchangedFiles="true" />
-        <Copy SourceFiles="$(TargetDir)\DSMFramework.dll" DestinationFolder="$(TargetDir)\packing" SkipUnchangedFiles="true" />
+
+  <ItemGroup>
+    <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.Core" Version="5.*" />
+    <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
+    <PackageReference Include="UnityEngine.Modules" Version="5.3.4" IncludeAssets="compile" />
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\refs\Assembly-CSharp.refasm.dll</HintPath>
+      </Reference>
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+  </ItemGroup>
+
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="AfterBuild">
+        <Copy SourceFiles="mod.toml" DestinationFolder="$(TargetDir)\packing" SkipUnchangedFiles="true" />
+        <Copy SourceFiles="$(TargetDir)\DSMFramework.dll" DestinationFolder="$(TargetDir)\packing\plugin" SkipUnchangedFiles="true" />
         <ZipDirectory SourceDirectory="$(TargetDir)\packing" DestinationFile="$(TargetDir)\DSMFramework.zip" Overwrite="true" />
-    </Target>
-   
-   
-
-
+  </Target>
 </Project>

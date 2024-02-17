@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace DSMFramework.Modding
 {
@@ -7,12 +9,11 @@ namespace DSMFramework.Modding
         public static readonly ModHelpMenuManager Manager = new ModHelpMenuManager();
         private ModHelpMenuManager()
         {
-            
         }
 
         internal static void RefreshDroneUpgradeMenu(HelpManualMenuHelper menuHelper, bool useSimpleHelp, HelpManualMenu droneMenu)
         {
-            foreach (var modDroneUpgrade in ModUpgradeManager.Manager.GETAllModUpgrades())
+            foreach (var modDroneUpgrade in ModUpgradeManager.Manager.GetAllModUpgrades())
             {
                 if (GlobalSettings.DiscoveredUpgrades.Contains(modDroneUpgrade.GetDefinition().Type) ||
                      useSimpleHelp)

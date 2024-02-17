@@ -26,8 +26,9 @@ namespace DSMFramework.Patches.DroneManager
                 if (Matches(node))
                 {
                     // Found instruction set match, patch it.
-                    Debug.logger.Log("[DSMF] Patching RandomlyChooseUpgrades.");
+                    Plugin.LOGGER.LogInfo("Patching RandomlyChooseUpgrades");
                     Patch(node);
+                    break;
                 }
 
             return codes.AsEnumerable(); // Linked list is already enumerable, no real performance lost here
@@ -91,7 +92,7 @@ namespace DSMFramework.Patches.DroneManager
             catch (NullReferenceException e)
             {
                 // This code block should be unreachable, but better handle any possible exception and make debugging easier if someday it is reached.
-                Debug.logger.Log("Unable to patch, unexpected null element in the linked list");
+                Plugin.LOGGER.LogInfo("Unable to patch, unexpected null element in the linked list");
                 Debug.LogException(e);
                 throw;
             }

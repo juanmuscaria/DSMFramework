@@ -38,10 +38,8 @@
     <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
     <PackageReference Include="BepInEx.Core" Version="5.*" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
+    <PackageReference Include="duskers-linux-steam" Version="1.205.0" />
     <PackageReference Include="UnityEngine.Modules" Version="5.3.4" IncludeAssets="compile" />
-    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-        <HintPath>..\refs\Assembly-CSharp.refasm.dll</HintPath>
-      </Reference>
   </ItemGroup>
   
   <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">

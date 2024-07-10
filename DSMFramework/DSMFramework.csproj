@@ -6,6 +6,9 @@
     <Version>0.0.2</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/juanmuscaria/DSMFramework</PackageProjectUrl>
+    <PackageLicenseUrl>http://unlicense.org</PackageLicenseUrl>
   </PropertyGroup>
 
     <PropertyGroup>
@@ -38,7 +41,7 @@
     <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
     <PackageReference Include="BepInEx.Core" Version="5.*" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
-    <PackageReference Include="duskers-linux-steam" Version="1.205.0" />
+    <PackageReference Include="duskers-linux-steam" Version="1.205.0" IncludeAssets="compile" />
     <PackageReference Include="UnityEngine.Modules" Version="5.3.4" IncludeAssets="compile" />
   </ItemGroup>
   

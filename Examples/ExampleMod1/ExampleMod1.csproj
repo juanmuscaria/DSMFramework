@@ -6,6 +6,7 @@
     <Version>1.0.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
     <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -39,7 +40,7 @@
     <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
     <PackageReference Include="BepInEx.Core" Version="5.*" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
-    <PackageReference Include="duskers-linux-steam" Version="1.205.0" />
+    <PackageReference Include="duskers-linux-steam" Version="1.205.0" IncludeAssets="compile" />
     <PackageReference Include="UnityEngine.Modules" Version="5.3.4" IncludeAssets="compile" />
     <ProjectReference Include="..\..\DSMFramework\DSMFramework.csproj" />
   </ItemGroup>
